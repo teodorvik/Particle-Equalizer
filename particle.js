@@ -1,7 +1,8 @@
 // Global variables
 var MAX_PARTICLES = 5;
+var MAX_LIFETIME = 50;
 var particleSystem;
-var lastTime = Date().getTime();
+var lastTime; 
 
 // Particle definition
 function Particle(position, velocity) {
@@ -23,46 +24,37 @@ Particle.prototype.removeParticle = function() {
 var ParticleSystem = function() {
 	particleSystem = new Array();
 
-	var i = 0;
 	particleSystem.addParticle = function() {
-		particleSystem.push(new Particle(i));
-		i++;
+
+		var position = $V([0.0, 0.0]);
+		var velocity = $V([0.3, 0.1]);
+
+		particleSystem.push(new Particle(position, velocity));
 	};
 
-	particleSystem.createNewParticle = function() {
-		// TODO - function som ändrar position och pruttar ut en ny partikel
-	};
-
-	particleSystem.calculatePositions = function() {
+	particleSystem.advancePositions = function() {
 		//TODO - ändra positionerna på alla partiklar i systemet.
-		var timeNow = Date().getTime();
+		var timeNow = new Date().getTime()/1000;
 		var time = timeNow - lastTime;
 
 		for(var i = 0; i < MAX_PARTICLES; i++) {
-			particleSystem[i].position = particleSystem[i].position + time*particleSystem[i].velocity;
+			particleSystem[i].position = particleSystem[i].position.add(particleSystem[i].velocity.multiply(time));
 		}
 
 		lastTime = timeNow;
 
 	};
 
-	/*particleSystem.removeParticle = function(id) {
-		/*
-			var array = [2, 5, 9];
-			var index = array.indexOf(5);
-			Then remove it with splice:
-
-			if (index > -1) {
-			    array.splice(index, 1);
-			}
-		* /
-
-		particleSystem.splice(id, 1);
-		
-	};*/
-
 	particleSystem.tickLifetime = function() {
 		//TODO - Lägg till ett på alla partiklars lifetime
+		for(var i = 0; i < particleSystem.length; i++) {
+			if (particleSystem[i].lifetime > MAX_LIFETIME) {
+				particleSystem[i].removeParticle();
+			} else {
+				particleSystem[i].lifetime += 1;	
+			}
+			
+		}
 	};
 
 	return particleSystem;
@@ -70,6 +62,9 @@ var ParticleSystem = function() {
 
 // Test function
 function particleTest() {
+	
+	// Initialize lastTime
+	lastTime = new Date().getTime()/1000;
 
 	var particleSystem = new ParticleSystem();
 
@@ -77,10 +72,6 @@ function particleTest() {
 		particleSystem.addParticle();
 	}
 
-	alert(particleSystem[0].position);
-
-	//particleSystem[0].removeParticle();
-
-
+	particleSystem.advancePositions();
 }
 
