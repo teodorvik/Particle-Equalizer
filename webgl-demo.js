@@ -20,12 +20,15 @@ var vertexPositionAttribute;
 var vertexColorAttribute;
 var perspectiveMatrix;
 
+var points;
 //
 // start
 //
 // Called when the canvas is created to get the ball rolling.
 //
 function start() {
+
+  
   canvas = document.getElementById("glcanvas");
 
   initWebGL(canvas);      // Initialize the GL context
@@ -40,7 +43,7 @@ function start() {
     
     // Initialize the shaders; this is where all the lighting for the
     // vertices and so forth is established.
-    
+    initParticleSystem();
     initShaders();
     
     // Here's where we call the routine that builds all the objects
@@ -52,6 +55,19 @@ function start() {
     
     setInterval(drawScene, 15);
   }
+}
+
+function initParticleSystem() {
+  particleTest();
+
+  points = new Array();
+
+  for(var i = 0; i < particleSystem.length; i++)  {
+    points.push(particleSystem[i].position);  
+  }
+
+  alert(points[2].inspect());
+
 }
 
 //

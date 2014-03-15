@@ -1,10 +1,13 @@
 // Global variables
-var MAX_PARTICLES = 5;
+/*var MAX_PARTICLES = 5;
 var MAX_LIFETIME = 50;
 var particleSystem;
 var lastTime; 
+*/
 
-// Particle definition
+/** 
+	Particle definition
+*/
 function Particle(position, velocity) {
 	this.position = position;
 	this.velocity = velocity;
@@ -19,15 +22,17 @@ Particle.prototype.removeParticle = function() {
 	}	
 };
 
-// Particle system definition
 
+/** 
+	Particle system definition
+*/
 var ParticleSystem = function() {
 	particleSystem = new Array();
 
 	particleSystem.addParticle = function() {
 
-		var position = $V([0.0, 0.0]);
-		var velocity = $V([0.3, 0.1]);
+		var position = $V([0.0, 0.0, 0.0]);
+		var velocity = $V([0.3, 0.1, 0.2]);
 
 		particleSystem.push(new Particle(position, velocity));
 	};
@@ -60,7 +65,18 @@ var ParticleSystem = function() {
 	return particleSystem;
 };
 
-// Test function
+
+/**
+	Force
+*/
+function Force() {
+
+}
+
+
+/** 
+	Test function
+*/
 function particleTest() {
 	
 	// Initialize lastTime
@@ -72,6 +88,6 @@ function particleTest() {
 		particleSystem.addParticle();
 	}
 
-	particleSystem.advancePositions();
+	//particleSystem.advancePositions();
 }
 
